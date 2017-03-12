@@ -86,7 +86,7 @@ module.exports = {
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.ts', '.tsx', '.js', '.json', '.jsx', ''],
+    extensions: ['.ts', '.tsx', '.js', '.json', '.jsx', '.scss', '.css', ''],
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -109,7 +109,14 @@ module.exports = {
         test: /\.(ts|tsx)$/,
         loader: 'tslint',
         include: paths.appSrc,
-      }
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: ['typed-css-modules','sass']
+      },
+      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+      {test: /\.js$/, loader: "source-map-loader"}
     ],
     loaders: [
       // ** ADDING/UPDATING LOADERS **
@@ -126,6 +133,7 @@ module.exports = {
           /\.(js|jsx)$/,
           /\.(ts|tsx)$/,
           /\.css$/,
+          /\.scss$/,
           /\.json$/,
           /\.svg$/
         ],
@@ -149,6 +157,15 @@ module.exports = {
       {
         test: /\.css$/,
         loader: 'style!css?importLoaders=1!postcss'
+      },
+      // SCSS + CSS-MODULES
+      {
+        test: /\.scss$/,
+        loaders: [
+            'style?sourceMap',
+            'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+            'sass'
+        ]
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
       // allow it implicitly so we also enable it.

@@ -114,7 +114,14 @@ module.exports = {
         test: /\.(ts|tsx)$/,
         loader: 'tslint',
         include: paths.appSrc,
-      }
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: ['typed-css-modules','sass']
+      },
+      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+      {test: /\.js$/, loader: "source-map-loader"}
     ],
     loaders: [
       // ** ADDING/UPDATING LOADERS **
@@ -131,6 +138,7 @@ module.exports = {
           /\.(js|jsx)$/,
           /\.(ts|tsx)$/,
           /\.css$/,
+          /\.scss$/,
           /\.json$/,
           /\.svg$/
         ],
@@ -166,6 +174,15 @@ module.exports = {
           extractTextPluginOptions
         )
         // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract(
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]!postcss',
+          'sass',
+          extractTextPluginOptions
+        )
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
       // allow it implicitly so we also enable it.
