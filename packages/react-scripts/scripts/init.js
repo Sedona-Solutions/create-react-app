@@ -72,6 +72,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
   if (useYarn) {
     command = 'yarnpkg';
     args = ['add'];
+    devArgs = ['add', '--dev'];
   } else {
     command = 'npm';
     args = [
@@ -79,8 +80,14 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
       '--save',
       verbose && '--verbose'
     ].filter(function(e) { return e; });
+    devArgs = [
+      'install',
+      '--save-dev',
+      verbose && '--verbose'
+    ].filter(function(e) { return e; });
   }
   args.push('react', 'react-dom', '@types/node', '@types/react', '@types/react-dom', '@types/jest');
+  devArgs.push('@types/node', '@types/react', '@types/react-dom', '@types/jest');
 
   // Install additional template dependencies, if present
   var templateDependenciesPath = path.join(appPath, '.template.dependencies.json');
@@ -104,6 +111,13 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
       console.error('`' + command + ' ' + args.join(' ') + '` failed');
       return;
     }
+  }
+
+  // Install devDependencies (typings, etc ...)
+  var devProc = spawn.sync(command, devArgs, {stdio: 'inherit'});
+  if (devProc.status !== 0) {
+    console.error('`' + command + ' ' + args.join(' ') + '` failed');
+    return;
   }
 
   // Display the most elegant way to cd.
