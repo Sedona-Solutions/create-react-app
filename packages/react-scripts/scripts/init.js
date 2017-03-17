@@ -26,6 +26,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
 
   // Setup the script rules
   appPackage.scripts = {
+    'prestart': 'tcm -p src/**/*.{css,scss} -c',
     'start': 'react-scripts-sedona start',
     'build': 'react-scripts-sedona build',
     'test': 'react-scripts-sedona test --env=jsdom',
