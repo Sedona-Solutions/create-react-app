@@ -69,6 +69,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
 
   var command;
   var args;
+  var devArgs;
 
   if (useYarn) {
     command = 'yarnpkg';
