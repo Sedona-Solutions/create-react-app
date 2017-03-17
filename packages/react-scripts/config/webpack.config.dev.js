@@ -95,12 +95,13 @@ module.exports = {
     }
   },
   // @remove-on-eject-begin
+  // FIXME: error with source-map-loader
   // Resolve loaders (webpack plugins for CSS, images, transpilation) from the
   // directory of `react-scripts` itself rather than the project directory.
-  resolveLoader: {
-    root: paths.ownNodeModules,
-    moduleTemplates: ['*-loader']
-  },
+  // resolveLoader: {
+  //   root: paths.ownNodeModules,
+  //   moduleTemplates: ['*-loader']
+  // },
   // @remove-on-eject-end
   module: {
     // First, run the linter.
